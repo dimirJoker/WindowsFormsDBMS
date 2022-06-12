@@ -27,6 +27,7 @@ namespace WindowsFormsDBMS
             }
             catch (MySqlException exception)
             {
+                connection.Close();
                 MessageBox.Show(exception.Message);
             }
         }
@@ -87,6 +88,7 @@ namespace WindowsFormsDBMS
             }
             catch (MySqlException exception)
             {
+                connection.Close();
                 MessageBox.Show(exception.Message);
             }
         }
