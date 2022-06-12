@@ -1,59 +1,53 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Data;
+using System.Text;
 using System.Windows.Forms;
 
 namespace WindowsFormsDBMS
 {
     public partial class FormMain : Form
     {
-        MySqlConnection connection = new MySqlConnection("Server=localhost;Uid=root;Pwd=root;Database=mytestdb;");
         public FormMain()
         {
             InitializeComponent();
-            switch (connection.State)
-            {
-                case ConnectionState.Closed:
-                    {
-                        btnConnection.Text = "Open connection";
-                    }
-                    break;
-                case ConnectionState.Open:
-                    {
-                        btnConnection.Text = "Close connection";
-                    }
-                    break;
-            }
+            RefreshDataGrid();
         }
-        private void btnConnection_Click(object sender, EventArgs e)
+        private void RefreshDataGrid()
         {
+            MySqlConnection connection = new MySqlConnection("Server=localhost;Uid=root;Pwd=root;Database=mytestdb;");
             try
             {
-                switch (connection.State)
-                {
-                    case ConnectionState.Closed:
-                        {
-                            connection.Open();
-                            btnConnection.Text = "Close connection";
-                            MySqlDataAdapter dataAdapter = new MySqlDataAdapter("SELECT * FROM mytesttable", connection);
-                            DataTable dataTable = new DataTable();
-                            dataAdapter.Fill(dataTable);
-                            dataGrid.DataSource = dataTable;
-                        }
-                        break;
-                    case ConnectionState.Open:
-                        {
-                            connection.Close();
-                            btnConnection.Text = "Open connection";
-                            dataGrid.DataSource = null;
-                        }
-                        break;
-                }
+                connection.Open();
+                MySqlDataAdapter adapter = new MySqlDataAdapter("SELECT * FROM mytesttable", connection);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                dataGrid.DataSource = table;
+                connection.Close();
             }
             catch (MySqlException exception)
             {
                 MessageBox.Show(exception.Message);
             }
+        }
+        private void btnConnection_Click(object sender, EventArgs e)
+        {
+            RefreshDataGrid();
+        }
+
+        private void dataGrid_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            var selectedCell = dataGrid.GetCellCount(DataGridViewElementStates.Selected);
+            StringBuilder stringBuilder = new StringBuilder();
+            var i = 0;
+            for (; i < selectedCell; i++)
+            {
+                stringBuilder.Append("Row: ");
+                stringBuilder.Append(dataGrid.SelectedCells[i].RowIndex.ToString());
+                stringBuilder.Append(", column: ");
+                stringBuilder.Append(dataGrid.SelectedCells[i].ColumnIndex.ToString());
+            }
+            MessageBox.Show(stringBuilder.ToString(), "Selected cell");
         }
     }
 }
