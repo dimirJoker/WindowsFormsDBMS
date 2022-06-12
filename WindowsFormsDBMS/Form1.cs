@@ -7,8 +7,6 @@ namespace WindowsFormsDBMS
 {
     public partial class FormMain : Form
     {
-        MySqlConnection connection = new MySqlConnection("server=localhost;user id=root;password=root"); // TO DO VARS
-
         public FormMain()
         {
             InitializeComponent();
@@ -93,32 +91,57 @@ namespace WindowsFormsDBMS
             }
         }
 
+        MySqlConnection connection;
         private void BtnConnect_Click(object sender, EventArgs e)
         {
-            connection.Open();
-            MySqlCommand command = new MySqlCommand("SHOW DATABASES", connection);
-            MySqlDataReader reader = command.ExecuteReader();
-            comboBoxDatabases.Items.Clear();
-
-            while (reader.Read())
+            MySqlConnectionStringBuilder connectionString = new MySqlConnectionStringBuilder
             {
-                comboBoxDatabases.Items.Add(reader[0]);
+                Server = txtBoxServer.Text,
+                UserID = txtBoxUsername.Text,
+                Password = txtBoxPassword.Text
+            };
+            connection = new MySqlConnection(connectionString.ConnectionString);
+
+            try
+            {
+                connection.Open();
+                MySqlCommand command = new MySqlCommand("SHOW DATABASES", connection);
+                MySqlDataReader reader = command.ExecuteReader();
+                comboBoxDatabases.Items.Clear();
+
+                while (reader.Read())
+                {
+                    comboBoxDatabases.Items.Add(reader[0]);
+                }
+                connection.Close();
             }
-            connection.Close();
+            catch (MySqlException exception)
+            {
+                connection.Close();
+                MessageBox.Show(exception.Message);
+            }
         }
 
         private void ComboBoxDatabases_SelectedIndexChanged(object sender, EventArgs e)
         {
-            connection.Open();
-            MySqlCommand command = new MySqlCommand($"SHOW TABLES FROM {comboBoxDatabases.Text}", connection);
-            MySqlDataReader reader = command.ExecuteReader();
-            comboBoxTables.Items.Clear();
-
-            while (reader.Read())
+            try
             {
-                comboBoxTables.Items.Add(reader[0]);
+                connection.Open();
+                MySqlCommand command = new MySqlCommand($"SHOW TABLES FROM {comboBoxDatabases.Text}", connection);
+                MySqlDataReader reader = command.ExecuteReader();
+                comboBoxTables.Items.Clear();
+
+                while (reader.Read())
+                {
+                    comboBoxTables.Items.Add(reader[0]);
+                }
+                connection.Close();
             }
-            connection.Close();
+            catch (MySqlException exception)
+            {
+                connection.Close();
+                MessageBox.Show(exception.Message);
+            }
         }
 
         private void DataGrid_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
