@@ -8,7 +8,7 @@ namespace WindowsFormsDBMS
 {
     public partial class FormMain : Form
     {
-        SqlConnection connection = new SqlConnection("server=localhost;user id=root;password=root"); // TO DO VARS
+        SqlConnection connection = new SqlConnection(@"Data Source=.\SQLEXPRESS;Integrated Security=True"); // TO DO VARS
 
         public FormMain()
         {
