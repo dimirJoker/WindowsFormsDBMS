@@ -33,11 +33,9 @@ namespace WindowsFormsDBMS
         }
 
         int rowCount;
-        string prevValue;
         private void DataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             rowCount = dataGrid.Rows.Count - 1;
-            prevValue = GetValue(dataGrid.CurrentCell);
         }
 
         private string GetValue(DataGridViewCell cell)
@@ -71,17 +69,19 @@ namespace WindowsFormsDBMS
             try
             {
                 connection.Open();
+                var databaseName = comboBoxDatabases.Text;
+                var tableName = comboBoxTables.Text;
                 var columnName = dataGrid.Columns[dataGrid.CurrentCell.ColumnIndex].Name;
                 var newValue = GetValue(dataGrid.CurrentCell);
 
                 if (dataGrid.CurrentCell.RowIndex != rowCount)
                 {
-                    MySqlCommand command = new MySqlCommand($"UPDATE {comboBoxDatabases.Text}.{comboBoxTables.Text} SET {columnName} = {newValue} WHERE {dataGrid.Columns[0].Name} = {dataGrid[0, dataGrid.CurrentCell.RowIndex].Value}", connection);
+                    MySqlCommand command = new MySqlCommand($"UPDATE {databaseName}.{tableName} SET {columnName} = {newValue} WHERE {dataGrid.Columns[0].Name} = {dataGrid[0, dataGrid.CurrentCell.RowIndex].Value}", connection);
                     MySqlDataReader reader = command.ExecuteReader();
                 }
                 else
                 {
-                    MySqlCommand command = new MySqlCommand($"INSERT INTO {comboBoxDatabases.Text}.{comboBoxTables.Text} ({columnName}) VALUES ({newValue})", connection);
+                    MySqlCommand command = new MySqlCommand($"INSERT INTO {databaseName}.{tableName} ({columnName}) VALUES ({newValue})", connection);
                     MySqlDataReader reader = command.ExecuteReader();
                 }
                 connection.Close();
@@ -126,7 +126,7 @@ namespace WindowsFormsDBMS
             try
             {
                 connection.Open();
-                MySqlCommand command = new MySqlCommand($"DELETE FROM {comboBoxDatabases.Text}.{comboBoxTables.Text} WHERE {dataGrid.Columns[0].Name} = {dataGrid[0, dataGrid.CurrentCell.RowIndex].Value}",connection);
+                MySqlCommand command = new MySqlCommand($"DELETE FROM {comboBoxDatabases.Text}.{comboBoxTables.Text} WHERE {dataGrid.Columns[0].Name} = {dataGrid[0, dataGrid.CurrentCell.RowIndex].Value}", connection);
                 MySqlDataReader reader = command.ExecuteReader();
                 connection.Close();
             }
