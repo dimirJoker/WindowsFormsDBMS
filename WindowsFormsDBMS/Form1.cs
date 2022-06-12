@@ -8,10 +8,12 @@ namespace WindowsFormsDBMS
     public partial class FormMain : Form
     {
         MySqlConnection connection = new MySqlConnection("server=localhost;user id=root;password=root"); // TO DO VARS
+
         public FormMain()
         {
             InitializeComponent();
         }
+
         private void SetDataGrid()
         {
             try
@@ -28,10 +30,12 @@ namespace WindowsFormsDBMS
                 MessageBox.Show(exception.Message);
             }
         }
+
         private void BtnRead_Click(object sender, EventArgs e)
         {
             SetDataGrid();
         }
+
         int rowCount;
         string prevValue;
         private void DataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -39,9 +43,11 @@ namespace WindowsFormsDBMS
             rowCount = dataGrid.Rows.Count - 1;
             prevValue = GetValue(dataGrid.CurrentCell);
         }
+
         private string GetValue(DataGridViewCell cell)
         {
             var type = cell.ValueType.Name;
+
             switch (type)
             {
                 default:
@@ -49,10 +55,12 @@ namespace WindowsFormsDBMS
                         MessageBox.Show("Unsupported value type!");
                     }
                     break;
+
                 case "String":
                     {
                         return $"'{dataGrid.CurrentCell.Value}'";
                     }
+
                 case "Single":
                 case "Int32":
                     {
@@ -61,16 +69,7 @@ namespace WindowsFormsDBMS
             }
             return null;
         }
-        private void UPDATE(string columnName, string newValue)
-        {
-            MySqlCommand command = new MySqlCommand($"UPDATE {txtBoxDatabase.Text}.{txtBoxTable.Text} SET {columnName} = {newValue} WHERE {columnName} = {prevValue}", connection);
-            MySqlDataReader reader = command.ExecuteReader();
-        }
-        private void INSERT(string columnName, string newValue)
-        {
-            MySqlCommand command = new MySqlCommand($"INSERT INTO {txtBoxDatabase.Text}.{txtBoxTable.Text} ({columnName}) VALUES ({newValue})", connection);
-            MySqlDataReader reader = command.ExecuteReader();
-        }
+
         private void DataGrid_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             try
@@ -78,13 +77,16 @@ namespace WindowsFormsDBMS
                 connection.Open();
                 var columnName = dataGrid.Columns[dataGrid.CurrentCell.ColumnIndex].Name;
                 var newValue = GetValue(dataGrid.CurrentCell);
+
                 if (dataGrid.CurrentCell.RowIndex != rowCount)
                 {
-                    UPDATE(columnName, newValue);
+                    MySqlCommand command = new MySqlCommand($"UPDATE {txtBoxDatabase.Text}.{txtBoxTable.Text} SET {columnName} = {newValue} WHERE {columnName} = {prevValue}", connection);
+                    MySqlDataReader reader = command.ExecuteReader();
                 }
                 else
                 {
-                    INSERT(columnName, newValue);
+                    MySqlCommand command = new MySqlCommand($"INSERT INTO {txtBoxDatabase.Text}.{txtBoxTable.Text} ({columnName}) VALUES ({newValue})", connection);
+                    MySqlDataReader reader = command.ExecuteReader();
                 }
                 connection.Close();
             }
@@ -93,6 +95,7 @@ namespace WindowsFormsDBMS
                 MessageBox.Show(exception.Message);
             }
         }
+
         private void btnConnect_Click(object sender, EventArgs e)
         {
 
