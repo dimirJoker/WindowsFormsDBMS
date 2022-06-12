@@ -31,11 +31,11 @@
             this.btnRead = new System.Windows.Forms.Button();
             this.dataGrid = new System.Windows.Forms.DataGridView();
             this.txtBoxServer = new System.Windows.Forms.TextBox();
-            this.txtBoxTable = new System.Windows.Forms.TextBox();
             this.txtBoxUsername = new System.Windows.Forms.TextBox();
             this.txtBoxPassword = new System.Windows.Forms.TextBox();
             this.btnConnect = new System.Windows.Forms.Button();
             this.comboBoxDatabases = new System.Windows.Forms.ComboBox();
+            this.comboBoxTables = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -68,14 +68,6 @@
             this.txtBoxServer.TabIndex = 2;
             this.txtBoxServer.Text = "localhost";
             // 
-            // txtBoxTable
-            // 
-            this.txtBoxTable.Location = new System.Drawing.Point(607, 14);
-            this.txtBoxTable.Name = "txtBoxTable";
-            this.txtBoxTable.Size = new System.Drawing.Size(100, 20);
-            this.txtBoxTable.TabIndex = 3;
-            this.txtBoxTable.Text = "mytesttable";
-            // 
             // txtBoxUsername
             // 
             this.txtBoxUsername.Location = new System.Drawing.Point(118, 14);
@@ -105,22 +97,32 @@
             // comboBoxDatabases
             // 
             this.comboBoxDatabases.FormattingEnabled = true;
-            this.comboBoxDatabases.Location = new System.Drawing.Point(480, 14);
+            this.comboBoxDatabases.Location = new System.Drawing.Point(459, 14);
             this.comboBoxDatabases.Name = "comboBoxDatabases";
             this.comboBoxDatabases.Size = new System.Drawing.Size(121, 21);
             this.comboBoxDatabases.TabIndex = 8;
             this.comboBoxDatabases.Text = "Databases";
+            this.comboBoxDatabases.SelectedIndexChanged += new System.EventHandler(this.ComboBoxDatabases_SelectedIndexChanged);
+            // 
+            // comboBoxTables
+            // 
+            this.comboBoxTables.FormattingEnabled = true;
+            this.comboBoxTables.Location = new System.Drawing.Point(586, 14);
+            this.comboBoxTables.Name = "comboBoxTables";
+            this.comboBoxTables.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxTables.TabIndex = 9;
+            this.comboBoxTables.Text = "Tables";
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.comboBoxTables);
             this.Controls.Add(this.comboBoxDatabases);
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.txtBoxPassword);
             this.Controls.Add(this.txtBoxUsername);
-            this.Controls.Add(this.txtBoxTable);
             this.Controls.Add(this.txtBoxServer);
             this.Controls.Add(this.dataGrid);
             this.Controls.Add(this.btnRead);
@@ -137,11 +139,11 @@
         private System.Windows.Forms.Button btnRead;
         private System.Windows.Forms.DataGridView dataGrid;
         private System.Windows.Forms.TextBox txtBoxServer;
-        private System.Windows.Forms.TextBox txtBoxTable;
         private System.Windows.Forms.TextBox txtBoxUsername;
         private System.Windows.Forms.TextBox txtBoxPassword;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.ComboBox comboBoxDatabases;
+        private System.Windows.Forms.ComboBox comboBoxTables;
     }
 }
 
