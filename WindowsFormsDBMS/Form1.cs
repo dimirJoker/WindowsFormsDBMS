@@ -1,25 +1,19 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Data;
-using System.Text;
 using System.Windows.Forms;
 
 namespace WindowsFormsDBMS
 {
     public partial class FormMain : Form
     {
-        public FormMain()
-        {
-            InitializeComponent();
-            RefreshDataGrid();
-        }
+        MySqlConnection connection = new MySqlConnection("Server=localhost;Uid=root;Pwd=root;Database=mytestdb;");
         private void RefreshDataGrid()
         {
-            MySqlConnection connection = new MySqlConnection("Server=localhost;Uid=root;Pwd=root;Database=mytestdb;");
             try
             {
                 connection.Open();
-                MySqlDataAdapter adapter = new MySqlDataAdapter("SELECT * FROM mytesttable", connection);
+                MySqlDataAdapter adapter = new MySqlDataAdapter("SELECT ItemName, Price FROM mytesttable", connection);
                 DataTable table = new DataTable();
                 adapter.Fill(table);
                 dataGrid.DataSource = table;
@@ -30,24 +24,47 @@ namespace WindowsFormsDBMS
                 MessageBox.Show(exception.Message);
             }
         }
+        public FormMain()
+        {
+            InitializeComponent();
+            RefreshDataGrid();
+        }
         private void btnConnection_Click(object sender, EventArgs e)
         {
             RefreshDataGrid();
         }
-
+        int rowCount;
+        private void dataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            rowCount = dataGrid.Rows.Count - 1;
+        }
         private void dataGrid_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            var selectedCell = dataGrid.GetCellCount(DataGridViewElementStates.Selected);
-            StringBuilder stringBuilder = new StringBuilder();
-            var i = 0;
-            for (; i < selectedCell; i++)
+            try
             {
-                stringBuilder.Append("Row: ");
-                stringBuilder.Append(dataGrid.SelectedCells[i].RowIndex.ToString());
-                stringBuilder.Append(", column: ");
-                stringBuilder.Append(dataGrid.SelectedCells[i].ColumnIndex.ToString());
+                if (dataGrid.CurrentCell.RowIndex == rowCount)
+                {
+                    connection.Open();
+                    switch (dataGrid.CurrentCell.ColumnIndex)
+                    {
+                        case 0:
+                            {
+                                MySqlCommand command = new MySqlCommand($"INSERT INTO mytesttable (ItemName) VALUES ('{dataGrid.CurrentCell.Value}')", connection);
+                                MySqlDataReader reader = command.ExecuteReader();
+                            }
+                            break;
+                        case 1:
+                            {
+                            }
+                            break;
+                    }
+                    connection.Close();
+                }
             }
-            MessageBox.Show(stringBuilder.ToString(), "Selected cell");
+            catch (MySqlException exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
         }
     }
 }
