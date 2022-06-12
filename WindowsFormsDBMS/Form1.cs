@@ -7,21 +7,39 @@ namespace WindowsFormsDBMS
 {
     public partial class FormMain : Form
     {
-        MySqlConnection connection = new MySqlConnection("server=localhost;user id=root;password=root;database=mytestdb");
+        MySqlConnection connection = new MySqlConnection("server=localhost;user id=root;password=root"); // TO DO VARS
         public FormMain()
         {
             InitializeComponent();
         }
-        private void btnRead_Click(object sender, EventArgs e)
+        private void SetDataGrid()
+        {
+            try
+            {
+                connection.Open();
+                MySqlDataAdapter adapter = new MySqlDataAdapter($"SELECT * FROM {txtBoxDatabase.Text}.{txtBoxTable.Text}", connection);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                dataGrid.DataSource = table;
+                connection.Close();
+            }
+            catch (MySqlException exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+        }
+        private void BtnRead_Click(object sender, EventArgs e)
         {
             SetDataGrid();
         }
         int rowCount;
-        private void dataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        string prevValue;
+        private void DataGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             rowCount = dataGrid.Rows.Count - 1;
+            prevValue = GetValue(dataGrid.CurrentCell);
         }
-        private string GetValueByType(DataGridViewCell cell)
+        private string GetValue(DataGridViewCell cell)
         {
             var type = cell.ValueType.Name;
             switch (type)
@@ -36,56 +54,38 @@ namespace WindowsFormsDBMS
                         return $"'{dataGrid.CurrentCell.Value}'";
                     }
                 case "Single":
+                case "Int32":
                     {
                         return dataGrid.CurrentCell.Value.ToString().Replace(",", ".");
                     }
             }
             return null;
         }
-        private void dataGrid_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        private void UPDATE(string columnName, string newValue)
         {
-            try
-            {
-                switch (dataGrid.CurrentCell.ColumnIndex)
-                {
-                    default:
-                        {
-                            connection.Open();
-                            var column = dataGrid.Columns[dataGrid.CurrentCell.ColumnIndex].Name;
-                            var value = GetValueByType(dataGrid.CurrentCell);
-                            if (dataGrid.CurrentCell.RowIndex != rowCount)
-                            {
-                                UPDATE(column, value);
-                            }
-                            else
-                            {
-                                INSERT(column, value);
-                            }
-                            connection.Close();
-                        }
-                        break;
-                    case 0:
-                        {
-                            MessageBox.Show("It's forbidden to change the ID!");
-                            SetDataGrid();
-                        }
-                        break;
-                }
-            }
-            catch (MySqlException exception)
-            {
-                MessageBox.Show(exception.Message);
-            }
+            MySqlCommand command = new MySqlCommand($"UPDATE {txtBoxDatabase.Text}.{txtBoxTable.Text} SET {columnName} = {newValue} WHERE {columnName} = {prevValue}", connection);
+            MySqlDataReader reader = command.ExecuteReader();
         }
-        private void SetDataGrid()
+        private void INSERT(string columnName, string newValue)
+        {
+            MySqlCommand command = new MySqlCommand($"INSERT INTO {txtBoxDatabase.Text}.{txtBoxTable.Text} ({columnName}) VALUES ({newValue})", connection);
+            MySqlDataReader reader = command.ExecuteReader();
+        }
+        private void DataGrid_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
                 connection.Open();
-                MySqlDataAdapter adapter = new MySqlDataAdapter($"SELECT * FROM {txtBoxTable.Text}", connection); // "SELECT * FROM mytesttable"
-                DataTable table = new DataTable();
-                adapter.Fill(table);
-                dataGrid.DataSource = table;
+                var columnName = dataGrid.Columns[dataGrid.CurrentCell.ColumnIndex].Name;
+                var newValue = GetValue(dataGrid.CurrentCell);
+                if (dataGrid.CurrentCell.RowIndex != rowCount)
+                {
+                    UPDATE(columnName, newValue);
+                }
+                else
+                {
+                    INSERT(columnName, newValue);
+                }
                 connection.Close();
             }
             catch (MySqlException exception)
@@ -93,15 +93,9 @@ namespace WindowsFormsDBMS
                 MessageBox.Show(exception.Message);
             }
         }
-        private void INSERT(string column, string value)
+        private void btnConnect_Click(object sender, EventArgs e)
         {
-            MySqlCommand command = new MySqlCommand($"INSERT INTO mytesttable ({column}) VALUES ({value})", connection);
-            MySqlDataReader reader = command.ExecuteReader();
-        }
-        private void UPDATE(string column, string value)
-        {
-            MySqlCommand command = new MySqlCommand($"UPDATE mytesttable SET {column} = {value} WHERE Id = {dataGrid[0, dataGrid.CurrentCell.RowIndex].Value}", connection);
-            MySqlDataReader reader = command.ExecuteReader();
+
         }
     }
 }
