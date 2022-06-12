@@ -1,13 +1,14 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Data;
+using System.Data.SqlClient;
 using System.Windows.Forms;
 
 namespace WindowsFormsDBMS
 {
     public partial class FormMain : Form
     {
-        MySqlConnection connection = new MySqlConnection("server=localhost;user id=root;password=root"); // TO DO VARS
+        SqlConnection connection = new SqlConnection("server=localhost;user id=root;password=root"); // TO DO VARS
 
         public FormMain()
         {
@@ -19,13 +20,13 @@ namespace WindowsFormsDBMS
             try
             {
                 connection.Open();
-                MySqlDataAdapter adapter = new MySqlDataAdapter($"SELECT * FROM {comboBoxDatabases.Text}.{comboBoxTables.Text}", connection);
+                SqlDataAdapter adapter = new SqlDataAdapter($"SELECT * FROM {comboBoxDatabases.Text}.{comboBoxTables.Text}", connection);
                 DataTable table = new DataTable();
                 adapter.Fill(table);
                 dataGrid.DataSource = table;
                 connection.Close();
             }
-            catch (MySqlException exception)
+            catch (SqlException exception)
             {
                 MessageBox.Show(exception.Message);
             }
@@ -80,17 +81,17 @@ namespace WindowsFormsDBMS
 
                 if (dataGrid.CurrentCell.RowIndex != rowCount)
                 {
-                    MySqlCommand command = new MySqlCommand($"UPDATE {comboBoxDatabases.Text}.{comboBoxTables.Text} SET {columnName} = {newValue} WHERE {columnName} = {prevValue}", connection);
-                    MySqlDataReader reader = command.ExecuteReader();
+                    SqlCommand command = new SqlCommand($"UPDATE {comboBoxDatabases.Text}.{comboBoxTables.Text} SET {columnName} = {newValue} WHERE {columnName} = {prevValue}", connection);
+                    SqlDataReader reader = command.ExecuteReader();
                 }
                 else
                 {
-                    MySqlCommand command = new MySqlCommand($"INSERT INTO {comboBoxDatabases.Text}.{comboBoxTables.Text} ({columnName}) VALUES ({newValue})", connection);
-                    MySqlDataReader reader = command.ExecuteReader();
+                    SqlCommand command = new SqlCommand($"INSERT INTO {comboBoxDatabases.Text}.{comboBoxTables.Text} ({columnName}) VALUES ({newValue})", connection);
+                    SqlDataReader reader = command.ExecuteReader();
                 }
                 connection.Close();
             }
-            catch (MySqlException exception)
+            catch (SqlException exception)
             {
                 MessageBox.Show(exception.Message);
             }
@@ -99,8 +100,8 @@ namespace WindowsFormsDBMS
         private void BtnConnect_Click(object sender, EventArgs e)
         {
             connection.Open();
-            MySqlCommand command = new MySqlCommand("SHOW DATABASES", connection);
-            MySqlDataReader reader = command.ExecuteReader();
+            SqlCommand command = new SqlCommand("SHOW DATABASES", connection);
+            SqlDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
             {
@@ -112,8 +113,8 @@ namespace WindowsFormsDBMS
         private void ComboBoxDatabases_SelectedIndexChanged(object sender, EventArgs e)
         {
             connection.Open();
-            MySqlCommand command = new MySqlCommand($"SHOW TABLES FROM {comboBoxDatabases.Text}", connection);
-            MySqlDataReader reader = command.ExecuteReader();
+            SqlCommand command = new SqlCommand($"SHOW TABLES FROM {comboBoxDatabases.Text}", connection);
+            SqlDataReader reader = command.ExecuteReader();
 
             while (reader.Read())
             {
