@@ -7,13 +7,12 @@ namespace WindowsFormsDBMS
 {
     public partial class FormMain : Form
     {
-        MySqlConnection connection = new MySqlConnection("Server=localhost;Uid=root;Pwd=root;Database=mytestdb;");
+        MySqlConnection connection = new MySqlConnection("server=localhost;user id=root;password=root;database=mytestdb");
         public FormMain()
         {
             InitializeComponent();
-            SetDataGrid();
         }
-        private void btnRefresh_Click(object sender, EventArgs e)
+        private void btnRead_Click(object sender, EventArgs e)
         {
             SetDataGrid();
         }
@@ -83,7 +82,7 @@ namespace WindowsFormsDBMS
             try
             {
                 connection.Open();
-                MySqlDataAdapter adapter = new MySqlDataAdapter("SELECT * FROM mytesttable", connection);
+                MySqlDataAdapter adapter = new MySqlDataAdapter($"SELECT * FROM {txtBoxTable.Text}", connection); // "SELECT * FROM mytesttable"
                 DataTable table = new DataTable();
                 adapter.Fill(table);
                 dataGrid.DataSource = table;
