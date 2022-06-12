@@ -30,12 +30,12 @@
         {
             this.btnRead = new System.Windows.Forms.Button();
             this.dataGrid = new System.Windows.Forms.DataGridView();
-            this.txtBoxServer = new System.Windows.Forms.TextBox();
             this.txtBoxUsername = new System.Windows.Forms.TextBox();
             this.txtBoxPassword = new System.Windows.Forms.TextBox();
             this.btnConnect = new System.Windows.Forms.Button();
             this.comboBoxDatabases = new System.Windows.Forms.ComboBox();
             this.comboBoxTables = new System.Windows.Forms.ComboBox();
+            this.txtBoxServer = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,14 +59,6 @@
             this.dataGrid.TabIndex = 1;
             this.dataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGrid_CellClick);
             this.dataGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGrid_CellValueChanged);
-            // 
-            // txtBoxServer
-            // 
-            this.txtBoxServer.Location = new System.Drawing.Point(12, 14);
-            this.txtBoxServer.Name = "txtBoxServer";
-            this.txtBoxServer.Size = new System.Drawing.Size(100, 20);
-            this.txtBoxServer.TabIndex = 2;
-            this.txtBoxServer.Text = "localhost";
             // 
             // txtBoxUsername
             // 
@@ -113,6 +105,14 @@
             this.comboBoxTables.TabIndex = 9;
             this.comboBoxTables.Text = "Tables";
             // 
+            // txtBoxServer
+            // 
+            this.txtBoxServer.Location = new System.Drawing.Point(12, 14);
+            this.txtBoxServer.Name = "txtBoxServer";
+            this.txtBoxServer.Size = new System.Drawing.Size(100, 20);
+            this.txtBoxServer.TabIndex = 2;
+            this.txtBoxServer.Text = "localhost";
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -127,7 +127,7 @@
             this.Controls.Add(this.dataGrid);
             this.Controls.Add(this.btnRead);
             this.Name = "FormMain";
-            this.Text = "My DBMS";
+            this.Text = "MySQL DBMS";
             ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -138,12 +138,12 @@
 
         private System.Windows.Forms.Button btnRead;
         private System.Windows.Forms.DataGridView dataGrid;
-        private System.Windows.Forms.TextBox txtBoxServer;
         private System.Windows.Forms.TextBox txtBoxUsername;
         private System.Windows.Forms.TextBox txtBoxPassword;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.ComboBox comboBoxDatabases;
         private System.Windows.Forms.ComboBox comboBoxTables;
+        private System.Windows.Forms.TextBox txtBoxServer;
     }
 }
 

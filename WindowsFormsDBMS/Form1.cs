@@ -14,7 +14,7 @@ namespace WindowsFormsDBMS
             InitializeComponent();
         }
 
-        private void SetDataGrid()
+        private void BtnRead_Click(object sender, EventArgs e)
         {
             try
             {
@@ -29,11 +29,6 @@ namespace WindowsFormsDBMS
             {
                 MessageBox.Show(exception.Message);
             }
-        }
-
-        private void BtnRead_Click(object sender, EventArgs e)
-        {
-            SetDataGrid();
         }
 
         int rowCount;
@@ -101,6 +96,7 @@ namespace WindowsFormsDBMS
             connection.Open();
             MySqlCommand command = new MySqlCommand("SHOW DATABASES", connection);
             MySqlDataReader reader = command.ExecuteReader();
+            comboBoxDatabases.Items.Clear();
 
             while (reader.Read())
             {
@@ -114,6 +110,7 @@ namespace WindowsFormsDBMS
             connection.Open();
             MySqlCommand command = new MySqlCommand($"SHOW TABLES FROM {comboBoxDatabases.Text}", connection);
             MySqlDataReader reader = command.ExecuteReader();
+            comboBoxTables.Items.Clear();
 
             while (reader.Read())
             {
