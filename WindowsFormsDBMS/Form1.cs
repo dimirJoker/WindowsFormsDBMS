@@ -19,7 +19,7 @@ namespace WindowsFormsDBMS
             try
             {
                 connection.Open();
-                MySqlDataAdapter adapter = new MySqlDataAdapter($"SELECT * FROM {txtBoxDatabase.Text}.{txtBoxTable.Text}", connection);
+                MySqlDataAdapter adapter = new MySqlDataAdapter($"SELECT * FROM {comboBoxDatabases.Text}.{txtBoxTable.Text}", connection);
                 DataTable table = new DataTable();
                 adapter.Fill(table);
                 dataGrid.DataSource = table;
@@ -80,12 +80,12 @@ namespace WindowsFormsDBMS
 
                 if (dataGrid.CurrentCell.RowIndex != rowCount)
                 {
-                    MySqlCommand command = new MySqlCommand($"UPDATE {txtBoxDatabase.Text}.{txtBoxTable.Text} SET {columnName} = {newValue} WHERE {columnName} = {prevValue}", connection);
+                    MySqlCommand command = new MySqlCommand($"UPDATE {comboBoxDatabases.Text}.{txtBoxTable.Text} SET {columnName} = {newValue} WHERE {columnName} = {prevValue}", connection);
                     MySqlDataReader reader = command.ExecuteReader();
                 }
                 else
                 {
-                    MySqlCommand command = new MySqlCommand($"INSERT INTO {txtBoxDatabase.Text}.{txtBoxTable.Text} ({columnName}) VALUES ({newValue})", connection);
+                    MySqlCommand command = new MySqlCommand($"INSERT INTO {comboBoxDatabases.Text}.{txtBoxTable.Text} ({columnName}) VALUES ({newValue})", connection);
                     MySqlDataReader reader = command.ExecuteReader();
                 }
                 connection.Close();
@@ -96,9 +96,17 @@ namespace WindowsFormsDBMS
             }
         }
 
-        private void btnConnect_Click(object sender, EventArgs e)
+        private void BtnConnect_Click(object sender, EventArgs e)
         {
+            connection.Open();
+            MySqlCommand command = new MySqlCommand("SHOW DATABASES",connection);
+            MySqlDataReader reader=command.ExecuteReader();
 
+            while (reader.Read())
+            {
+                comboBoxDatabases.Items.Add(reader[0]);
+            }
+            connection.Close();
         }
     }
 }

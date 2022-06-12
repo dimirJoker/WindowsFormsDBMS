@@ -32,7 +32,6 @@
             this.dataGrid = new System.Windows.Forms.DataGridView();
             this.txtBoxServer = new System.Windows.Forms.TextBox();
             this.txtBoxTable = new System.Windows.Forms.TextBox();
-            this.txtBoxDatabase = new System.Windows.Forms.TextBox();
             this.txtBoxUsername = new System.Windows.Forms.TextBox();
             this.txtBoxPassword = new System.Windows.Forms.TextBox();
             this.btnConnect = new System.Windows.Forms.Button();
@@ -42,9 +41,9 @@
             // 
             // btnRead
             // 
-            this.btnRead.Location = new System.Drawing.Point(673, 12);
+            this.btnRead.Location = new System.Drawing.Point(713, 12);
             this.btnRead.Name = "btnRead";
-            this.btnRead.Size = new System.Drawing.Size(115, 23);
+            this.btnRead.Size = new System.Drawing.Size(75, 23);
             this.btnRead.TabIndex = 0;
             this.btnRead.Text = "READ";
             this.btnRead.UseVisualStyleBackColor = true;
@@ -71,19 +70,11 @@
             // 
             // txtBoxTable
             // 
-            this.txtBoxTable.Location = new System.Drawing.Point(567, 14);
+            this.txtBoxTable.Location = new System.Drawing.Point(607, 14);
             this.txtBoxTable.Name = "txtBoxTable";
             this.txtBoxTable.Size = new System.Drawing.Size(100, 20);
             this.txtBoxTable.TabIndex = 3;
             this.txtBoxTable.Text = "mytesttable";
-            // 
-            // txtBoxDatabase
-            // 
-            this.txtBoxDatabase.Location = new System.Drawing.Point(461, 14);
-            this.txtBoxDatabase.Name = "txtBoxDatabase";
-            this.txtBoxDatabase.Size = new System.Drawing.Size(100, 20);
-            this.txtBoxDatabase.TabIndex = 4;
-            this.txtBoxDatabase.Text = "mytestdb";
             // 
             // txtBoxUsername
             // 
@@ -105,16 +96,16 @@
             // 
             this.btnConnect.Location = new System.Drawing.Point(330, 12);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(115, 23);
+            this.btnConnect.Size = new System.Drawing.Size(75, 23);
             this.btnConnect.TabIndex = 7;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            this.btnConnect.Click += new System.EventHandler(this.BtnConnect_Click);
             // 
             // comboBoxDatabases
             // 
             this.comboBoxDatabases.FormattingEnabled = true;
-            this.comboBoxDatabases.Location = new System.Drawing.Point(583, 387);
+            this.comboBoxDatabases.Location = new System.Drawing.Point(480, 14);
             this.comboBoxDatabases.Name = "comboBoxDatabases";
             this.comboBoxDatabases.Size = new System.Drawing.Size(121, 21);
             this.comboBoxDatabases.TabIndex = 8;
@@ -129,7 +120,6 @@
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.txtBoxPassword);
             this.Controls.Add(this.txtBoxUsername);
-            this.Controls.Add(this.txtBoxDatabase);
             this.Controls.Add(this.txtBoxTable);
             this.Controls.Add(this.txtBoxServer);
             this.Controls.Add(this.dataGrid);
@@ -148,7 +138,6 @@
         private System.Windows.Forms.DataGridView dataGrid;
         private System.Windows.Forms.TextBox txtBoxServer;
         private System.Windows.Forms.TextBox txtBoxTable;
-        private System.Windows.Forms.TextBox txtBoxDatabase;
         private System.Windows.Forms.TextBox txtBoxUsername;
         private System.Windows.Forms.TextBox txtBoxPassword;
         private System.Windows.Forms.Button btnConnect;
