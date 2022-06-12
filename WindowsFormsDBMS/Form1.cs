@@ -76,7 +76,7 @@ namespace WindowsFormsDBMS
 
                 if (dataGrid.CurrentCell.RowIndex != rowCount)
                 {
-                    MySqlCommand command = new MySqlCommand($"UPDATE {comboBoxDatabases.Text}.{comboBoxTables.Text} SET {columnName} = {newValue} WHERE {columnName} = {prevValue}", connection);
+                    MySqlCommand command = new MySqlCommand($"UPDATE {comboBoxDatabases.Text}.{comboBoxTables.Text} SET {columnName} = {newValue} WHERE {dataGrid.Columns[0].Name} = {dataGrid[0, dataGrid.CurrentCell.RowIndex].Value}", connection);
                     MySqlDataReader reader = command.ExecuteReader();
                 }
                 else
@@ -119,6 +119,22 @@ namespace WindowsFormsDBMS
                 comboBoxTables.Items.Add(reader[0]);
             }
             connection.Close();
+        }
+
+        private void DataGrid_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            try
+            {
+                connection.Open();
+                MySqlCommand command = new MySqlCommand($"DELETE FROM {comboBoxDatabases.Text}.{comboBoxTables.Text} WHERE {dataGrid.Columns[0].Name} = {dataGrid[0, dataGrid.CurrentCell.RowIndex].Value}",connection);
+                MySqlDataReader reader = command.ExecuteReader();
+                connection.Close();
+            }
+            catch (MySqlException exception)
+            {
+                connection.Close();
+                MessageBox.Show(exception.Message);
+            }
         }
     }
 }
