@@ -28,47 +28,47 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnCon = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.btnConnection = new System.Windows.Forms.Button();
+            this.dataGrid = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).BeginInit();
             this.SuspendLayout();
             // 
-            // btnCon
+            // btnConnection
             // 
-            this.btnCon.Location = new System.Drawing.Point(12, 12);
-            this.btnCon.Name = "btnCon";
-            this.btnCon.Size = new System.Drawing.Size(115, 23);
-            this.btnCon.TabIndex = 0;
-            this.btnCon.Text = "Connection button";
-            this.btnCon.UseVisualStyleBackColor = true;
-            this.btnCon.Click += new System.EventHandler(this.btnCon_Click);
+            this.btnConnection.Location = new System.Drawing.Point(12, 12);
+            this.btnConnection.Name = "btnConnection";
+            this.btnConnection.Size = new System.Drawing.Size(115, 23);
+            this.btnConnection.TabIndex = 0;
+            this.btnConnection.Text = "btnConnection";
+            this.btnConnection.UseVisualStyleBackColor = true;
+            this.btnConnection.Click += new System.EventHandler(this.btnConnection_Click);
             // 
-            // dataGridView1
+            // dataGridView
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(289, 152);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
-            this.dataGridView1.TabIndex = 1;
+            this.dataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGrid.Location = new System.Drawing.Point(133, 12);
+            this.dataGrid.Name = "dataGridView";
+            this.dataGrid.Size = new System.Drawing.Size(655, 426);
+            this.dataGrid.TabIndex = 1;
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.btnCon);
+            this.Controls.Add(this.dataGrid);
+            this.Controls.Add(this.btnConnection);
             this.Name = "FormMain";
             this.Text = "My DBMS";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGrid)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button btnCon;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button btnConnection;
+        private System.Windows.Forms.DataGridView dataGrid;
     }
 }
 

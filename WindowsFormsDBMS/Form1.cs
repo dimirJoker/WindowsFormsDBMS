@@ -7,7 +7,7 @@ namespace WindowsFormsDBMS
 {
     public partial class FormMain : Form
     {
-        MySqlConnection connection = new MySqlConnection("Server=localhost;Uid=root;Pwd=root;Database=test-db;");
+        MySqlConnection connection = new MySqlConnection("Server=localhost;Uid=root;Pwd=root;Database=mytestdb;");
         public FormMain()
         {
             InitializeComponent();
@@ -15,17 +15,17 @@ namespace WindowsFormsDBMS
             {
                 case ConnectionState.Closed:
                     {
-                        btnCon.Text = "Open connection";
+                        btnConnection.Text = "Open connection";
                     }
                     break;
                 case ConnectionState.Open:
                     {
-                        btnCon.Text = "Close connection";
+                        btnConnection.Text = "Close connection";
                     }
                     break;
             }
         }
-        private void btnCon_Click(object sender, EventArgs e)
+        private void btnConnection_Click(object sender, EventArgs e)
         {
             try
             {
@@ -34,13 +34,18 @@ namespace WindowsFormsDBMS
                     case ConnectionState.Closed:
                         {
                             connection.Open();
-                            btnCon.Text = "Close connection";
+                            btnConnection.Text = "Close connection";
+                            MySqlDataAdapter dataAdapter = new MySqlDataAdapter("SELECT * FROM mytesttable", connection);
+                            DataTable dataTable = new DataTable();
+                            dataAdapter.Fill(dataTable);
+                            dataGrid.DataSource = dataTable;
                         }
                         break;
                     case ConnectionState.Open:
                         {
                             connection.Close();
-                            btnCon.Text = "Open connection";
+                            btnConnection.Text = "Open connection";
+                            dataGrid.DataSource = null;
                         }
                         break;
                 }
